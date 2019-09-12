@@ -1,5 +1,4 @@
 .code
-
 extern HookHandlerDispath:proc 
 
 e9Hook proc param:QWORD
