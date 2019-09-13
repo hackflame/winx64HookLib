@@ -51,17 +51,17 @@ bool funcE9Hook(Hook * hook, char * calcCode, ULONG * size)
 	shellcode[offset+1] = 0x48;
 	shellcode[offset+2] = 0xb8;
 	*(PULONG64)&shellcode[offset+3] = hook->getRetAddress();
-	shellcode[offset + 11] = 0x48; //48 89 44 24 08
-	shellcode[offset + 12] = 0x89; //48 89 44 24 08
-	shellcode[offset + 13] = 0x44; //48 89 44 24 08
-	shellcode[offset + 14] = 0x24; //48 89 44 24 08
-	shellcode[offset + 15] = 0x08; //48 89 44 24 08
-	shellcode[offset + 16] = 0x58; //48 89 44 24 08
-	shellcode[offset + 17] = 0x67; //67 FF 34 24 
-	shellcode[offset + 18] = 0xFF; //67 FF 34 24 
-	shellcode[offset + 19] = 0x34; //67 FF 34 24 
-	shellcode[offset + 20] = 0x24; //67 FF 34 24 
-	shellcode[offset + 21] = 0xc3; //67 FF 34 24 
+	shellcode[offset + 11] = 0x48; //mov [rsp-0x8],rax
+	shellcode[offset + 12] = 0x89; 
+	shellcode[offset + 13] = 0x44; 
+	shellcode[offset + 14] = 0x24; 
+	shellcode[offset + 15] = 0xF8; 
+	shellcode[offset + 16] = 0x58; //pop rax
+	shellcode[offset + 17] = 0xFF; //push [rsp-0x10];
+	shellcode[offset + 18] = 0x74; 
+	shellcode[offset + 19] = 0x24; 
+	shellcode[offset + 20] = 0xF0; 
+	shellcode[offset + 21] = 0xc3; //ret
 
 	char code[13] = { 0x50,0x48 ,0xB8 ,0x89 ,0x67 ,0x45 ,0x23 ,0x01 ,0x00 ,0x00 ,0x00 ,0xFF,0xE0 };
 
