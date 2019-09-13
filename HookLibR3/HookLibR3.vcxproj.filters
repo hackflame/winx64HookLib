@@ -49,8 +49,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="hook.asm">
+    <MASM Include="hook1.asm">
       <Filter>源文件</Filter>
-    </None>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>
