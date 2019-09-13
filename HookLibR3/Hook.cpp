@@ -77,14 +77,14 @@ bool funcE9Hook(Hook * hook, char * calcCode, ULONG * size)
 }
 
 
-Hook::Hook(ULONG64 hookAddress, HookCallBackProc hookCallBack, ULONG copySize, ULONG64 retAddress, HookType hookType)
+Hook::Hook(ULONG64 hookAddress, HookCallBackProc hookCallBack,  ULONG64 retAddress, HookType hookType)
 {
 	this->hookAddress = hookAddress;
 	this->hookCallBack = hookCallBack;
 	this->hookType = hookType;
 	this->retAddress = retAddress;
 	this->misHook = false;
-	this->copySize = copySize;
+	this->copySize = retAddress - hookAddress;
 	memset(&this->hookBufCode, 0, 0x100);
 	this->shellCodeAddr = 0;
 }

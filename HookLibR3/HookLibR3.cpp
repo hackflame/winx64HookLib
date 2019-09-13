@@ -20,7 +20,7 @@ int main()
 	//HOOKÇ°
 	ULONG64 x = (ULONG64)GetProcAddress(GetModuleHandle(L"ntdll.dll"), "NtOpenProcess");
 	auto engine = HookEngine::GetInstance();
-	Hook * hook = new Hook(addr, callback, 15, addr+15, HOOK_E9);
+	Hook * hook = new Hook(addr, callback, addr+15, HOOK_E9);
 	engine->AddHook(hook);
 
 	//Hookºó

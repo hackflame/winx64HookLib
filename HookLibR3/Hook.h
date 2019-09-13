@@ -51,7 +51,7 @@ private:
 
 	
 public:
-	Hook(ULONG64 hookAddress, HookCallBackProc hookCallBack, ULONG copySize,ULONG64 retAddress = 0,HookType hookType = HookType::HOOK_E8);
+	Hook(ULONG64 hookAddress, HookCallBackProc hookCallBack, ULONG64 retAddress = 0,HookType hookType = HookType::HOOK_E8);
 	virtual ~Hook();
 	virtual bool funcHook();
 	virtual void resetHook();
