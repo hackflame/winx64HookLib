@@ -17,14 +17,17 @@ e9Hook proc param:QWORD
  push rsp;
  push rbx;
  push rdx;
- push rcx;
- push rax;
+ push [rbp+10h];  //;push rcx;
+ push [rbp+18h];  //;push rax;
 
  lea rdx,[rsp];
+ sub rsp,0100h
  call HookHandlerDispath
-
+ add rsp,0100h
  pop rax;
+ mov [rbp+18h],rax; //ÐÞÕý
  pop rcx;
+ mov [rbp+10h],rcx; //ÐÞÕý
  pop rdx;
  pop rbx;
  pop rsp;
@@ -40,6 +43,7 @@ e9Hook proc param:QWORD
  pop r14;
  pop r15;
  popfq;
+ 
  ret;
 e9Hook endp
 

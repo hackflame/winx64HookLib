@@ -97,12 +97,15 @@ Hook::~Hook()
 
 void mymemcpy(PVOID desc, PVOID src, ULONG size)
 {
-	char * md = (char *)desc;
-	char * msrc = (char *)src;
+	unsigned char * md = (unsigned char *)desc;
+	unsigned char * msrc = (unsigned  char *)src;
 	ULONG msize = size;
+	int i = 0;
 	while (msize) 
 	{
-		*md++ = *msrc++;
+		md[i] = msrc[i];
+		//*md++ = *msrc++;
+		i++;
 		msize--;
 	}
 }
@@ -190,4 +193,9 @@ ULONG Hook::getOriginalCodeSize()
 void Hook::setShellCodeAddr(ULONG64 Shellcode)
 {
 	this->shellCodeAddr = Shellcode;
+}
+
+ULONG64 Hook::getShellCodeAddr()
+{
+	return this->shellCodeAddr;
 }

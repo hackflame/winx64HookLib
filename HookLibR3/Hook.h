@@ -63,6 +63,7 @@ public:
 	char * getOriginalCode();
 	ULONG getOriginalCodeSize();
 	void setShellCodeAddr(ULONG64);
+	ULONG64 getShellCodeAddr();
 };
 
 
