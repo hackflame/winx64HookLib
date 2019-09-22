@@ -1,4 +1,5 @@
 .code
+
 extern HookHandlerDispath:proc 
 
 e9Hook proc param:QWORD
@@ -46,5 +47,18 @@ e9Hook proc param:QWORD
  
  ret;
 e9Hook endp
+
+_setNumber proc index:QWORD
+	mov r10,rcx;
+	ret;
+_setNumber endp
+
+__syscall proc
+	mov rax,r10;
+	mov r10,rcx;
+	syscall
+
+	ret;
+__syscall endp;
 
 end

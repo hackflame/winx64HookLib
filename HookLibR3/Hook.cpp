@@ -114,6 +114,7 @@ bool Hook::funcHook()
 {
 	
 	mymemcpy(this->hookBufCode,(PVOID)this->hookAddress,this->copySize);
+
 	FuncHookProc func = funcCallback[this->hookType];
 	if (func == nullptr) return false;
 	char code[0x20] = {0};

@@ -6,8 +6,9 @@
 #include "stdafx.h"
 #include <Windows.h>
 #include "HookEngine.h"
+#include "tools.h"
 
-ULONG64 addr = (ULONG64)0x000007FEFD913360;
+ULONG64 addr = (ULONG64)0x000007FEFD0E3360;
 char buf[100] = {0};
 
 void initCrc() 
@@ -79,6 +80,7 @@ ULONG64 crccallback(Hook * hook, PRegisterContext pRegisterContext)
 
 int main()
 {
+
 	initCrc();
 	HANDLE hThread = CreateThread(NULL, NULL, crcTest, NULL, 0, 0);
 	printf("error %d\n", GetLastError());
@@ -91,7 +93,6 @@ int main()
 	engine->AddHook(hook1);
 
 	
-
 	
 
 	//Hook后
@@ -99,10 +100,10 @@ int main()
 
 
 
-	//HookEngine::DestoryInstance();
+	HookEngine::DestoryInstance();
 
 	//Hook释放后 是否正常
-	//ULONG64 z = (ULONG64)GetProcAddress(GetModuleHandle(L"ntdll.dll"), "NtOpenProcess");
+	ULONG64 z = (ULONG64)GetProcAddress(GetModuleHandle(L"ntdll.dll"), "NtOpenProcess");
 	
 	getchar();
 	return 0;
