@@ -62,8 +62,6 @@ __syscall proc
 	mov rax,r10;
 	mov r10,rcx;
 	syscall
-
-
 	ret;
 __syscall endp;
 

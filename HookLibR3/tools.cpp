@@ -38,6 +38,8 @@ NTSTATUS MyAllocateVirtualMemory(
 )
 {
 	ULONG number = GetFuncTemplate("ntdll.dll", "ZwAllocateVirtualMemory");
+	if (number <= 0)  return number;
+
 	SIZE_T size = RegionSize;
 	NTSTATUS status = callSysCall(number,hProcess, BaseAddress, 0, &size, AllocationType, Protect);
 	return status;
