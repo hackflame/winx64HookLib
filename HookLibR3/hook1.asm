@@ -14,8 +14,10 @@ e9Hook proc param:QWORD
  push r8;
  push rdi;
  push rsi;
- push rbp;
- push rsp;
+
+ push [rbp];
+ ;push rbp;
+ 
  push rbx;
  push rdx;
  push [rbp+10h];  //;push rcx;
@@ -31,8 +33,8 @@ e9Hook proc param:QWORD
  mov [rbp+10h],rcx; //修正
  pop rdx;
  pop rbx;
- pop rsp;
  pop rbp;
+
  pop rsi;
  pop rdi;
  pop r8;
@@ -44,6 +46,9 @@ e9Hook proc param:QWORD
  pop r14;
  pop r15;
  popfq;
+
+ mov [rsp],rbp; //主要是绕过编译器生成的代码 为了修改RBP不容易啊
+ mov rbp,rsp;
  
  ret;
 e9Hook endp

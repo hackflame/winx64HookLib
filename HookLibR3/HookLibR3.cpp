@@ -8,7 +8,7 @@
 #include "HookEngine.h"
 #include "tools.h"
 
-ULONG64 addr = (ULONG64)0x000007FEFD0E3360;
+ULONG64 addr = (ULONG64)0x000007FEFD0A3360;
 char buf[100] = {0};
 
 void initCrc() 
@@ -57,6 +57,7 @@ DWORD WINAPI crcTest(PVOID CONTEXT)
 ULONG64 callback(Hook * hook, PRegisterContext pRegisterContext)
 {
 	pRegisterContext->r13 = 0x12345678;
+	pRegisterContext->rbp = 0x60;
 	printf("-------------------------------\r\n");
 	return 0;
 }
@@ -73,14 +74,14 @@ ULONG64 crccallback(Hook * hook, PRegisterContext pRegisterContext)
 	}
 	pRegisterContext->rax = *(PULONG)&buf[i];
 	i += 4;
-	
+	//pRegisterContext->rbp = 0x100;
 	printf("---------------ÈÃÄã¼ì²â²»µ½ÎÒ----------------\r\n");
 	return 0;
 }
 
 int main()
 {
-
+	//char * p =(char*)MyAllocateVirtual(NULL, 0x1000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	initCrc();
 	HANDLE hThread = CreateThread(NULL, NULL, crcTest, NULL, 0, 0);
 	printf("error %d\n", GetLastError());
@@ -91,7 +92,7 @@ int main()
 	Hook * hook1 = new Hook((ULONG64)crcTest+0xA9, crccallback, (ULONG64)crcTest + 0xA9+15, HOOK_E9);
 	engine->AddHook(hook);
 	engine->AddHook(hook1);
-
+	getchar();
 	
 	
 

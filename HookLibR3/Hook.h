@@ -19,7 +19,6 @@ typedef struct _RegisterContext
 	ULONG64 rdx;
 	ULONG64 rbx;
 	ULONG64 rbp;
-	ULONG64 rsp;
 	ULONG64 rsi;
 	ULONG64 rdi;
 	ULONG64 r8;
