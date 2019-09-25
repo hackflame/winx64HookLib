@@ -17,7 +17,7 @@ NTSTATUS callSysCall(DWORD SerivceNumber,Args ...args)
 
 
 
-ULONG GetFuncTemplate(char * moduleName, char * funcName)
+ULONG GetFuncNumber(char * moduleName, char * funcName)
 {
 	HMODULE moudule = GetModuleHandleA(moduleName);
 	if (moudule == NULL) return -1;
@@ -37,7 +37,7 @@ NTSTATUS MyAllocateVirtualMemory(
 	_In_ ULONG Protect
 )
 {
-	ULONG number = GetFuncTemplate("ntdll.dll", "ZwAllocateVirtualMemory");
+	ULONG number = GetFuncNumber("ntdll.dll", "ZwAllocateVirtualMemory");
 	if (number <= 0)  return number;
 
 	SIZE_T size = RegionSize;
