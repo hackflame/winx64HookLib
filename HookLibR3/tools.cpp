@@ -2,16 +2,18 @@
 #include "tools.h"
 #include "asm.h"
 
-typedef NTSTATUS(__fastcall *ZwAllocateVirtualMemoryProc)(
 
-	HANDLE hProcess,
-	_Inout_ PVOID * BaseAddress,
-	_In_ ULONG_PTR ZeroBits,
-	_Inout_ PSIZE_T RegionSize,
-	_In_ ULONG AllocationType,
-	_In_ ULONG Protect
-	);
 
+typedef NTSTATUS(*CallProc)(...);
+
+template<typename ...Args>
+NTSTATUS callSysCall(DWORD SerivceNumber,Args ...args)
+{
+	ULONG64 sysCallAddr = (ULONG64)__syscall;
+	CallProc  syscallFunc = (CallProc)sysCallAddr;
+	_setNumber(SerivceNumber);
+	return syscallFunc(args...);
+}
 
 
 
@@ -36,11 +38,8 @@ NTSTATUS MyAllocateVirtualMemory(
 )
 {
 	ULONG number = GetFuncTemplate("ntdll.dll", "ZwAllocateVirtualMemory");
-	ULONG64 sysCallAddr = (ULONG64)__syscall;
-	_setNumber(number);
 	SIZE_T size = RegionSize;
-	ZwAllocateVirtualMemoryProc  syscallFunc = (ZwAllocateVirtualMemoryProc)sysCallAddr;
-	NTSTATUS status = syscallFunc(hProcess, BaseAddress, 0, &size, AllocationType, Protect);
+	NTSTATUS status = callSysCall(number,hProcess, BaseAddress, 0, &size, AllocationType, Protect);
 	return status;
 }
 
