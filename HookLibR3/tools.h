@@ -14,3 +14,5 @@ EXTERN_C PVOID MyAllocateVirtual(
 	_In_ ULONG AllocationType,
 	_In_ ULONG Protect
 );
+
+BOOL WINAPI MySetWindowDisplayAffinity(_In_ HWND hWnd, _In_ DWORD dwAffinity);

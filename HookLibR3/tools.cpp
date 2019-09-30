@@ -56,3 +56,11 @@ EXTERN_C PVOID MyAllocateVirtual(_Inout_ PVOID BaseAddress, _In_ SIZE_T RegionSi
 
 	return NULL;
 }
+
+
+BOOL WINAPI MySetWindowDisplayAffinity(_In_ HWND hWnd, _In_ DWORD dwAffinity)
+{
+	ULONG number = GetFuncNumber("user32.dll", "SetWindowDisplayAffinity");
+	if (number <= 0)  return FALSE;
+	return callSysCall(number, hWnd, dwAffinity);
+}
