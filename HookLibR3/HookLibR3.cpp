@@ -81,7 +81,9 @@ ULONG64 crccallback(Hook * hook, PRegisterContext pRegisterContext)
 
 int main()
 {
-	char * p =(char*)MyAllocateVirtual(NULL, 0x1000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+
+	MySetWindowDisplayAffinity((HWND)0x00080C86, 1);
+	//char * p =(char*)MyAllocateVirtual(NULL, 0x1000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	initCrc();
 	HANDLE hThread = CreateThread(NULL, NULL, crcTest, NULL, 0, 0);
 	printf("error %d\n", GetLastError());
