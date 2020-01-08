@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include "HookEngine.h"
 #include "tools.h"
+#include "ReParserNT.h"
 
 ULONG64 addr = (ULONG64)0x000007FEFD0A3360;
 char buf[100] = {0};
@@ -81,9 +82,9 @@ ULONG64 crccallback(Hook * hook, PRegisterContext pRegisterContext)
 
 int main()
 {
-
-	MySetWindowDisplayAffinity((HWND)0x00080C86, 1);
-	//char * p =(char*)MyAllocateVirtual(NULL, 0x1000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	//ULONG64 index = ReParserNT::GetInstance()->GetZwFunctionIndex("NtOpenProcess");
+	//MySetWindowDisplayAffinity((HWND)0x00080C86, 1);
+	char * p =(char*)MyAllocateVirtual(NULL, 0x1000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	initCrc();
 	HANDLE hThread = CreateThread(NULL, NULL, crcTest, NULL, 0, 0);
 	printf("error %d\n", GetLastError());

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "tools.h"
 #include "asm.h"
-
+#include "ReParserNT.h"
 
 
 typedef NTSTATUS(*CallProc)(...);
@@ -37,7 +37,8 @@ NTSTATUS MyAllocateVirtualMemory(
 	_In_ ULONG Protect
 )
 {
-	ULONG number = GetFuncNumber("ntdll.dll", "ZwAllocateVirtualMemory");
+	
+	ULONG number = ReParserNT::GetInstance()->GetZwFunctionIndex("ZwAllocateVirtualMemory");
 	if (number <= 0)  return number;
 
 	SIZE_T size = RegionSize;
