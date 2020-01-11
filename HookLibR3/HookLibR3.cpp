@@ -80,10 +80,29 @@ ULONG64 crccallback(Hook * hook, PRegisterContext pRegisterContext)
 	return 0;
 }
 
+
+LONG NTAPI ExpFunc(struct _EXCEPTION_POINTERS *ExceptionInfo) 
+{
+	if (ExceptionInfo->ExceptionRecord->ExceptionCode == 0xC0000094) 
+	{
+		MessageBox(NULL, NULL, NULL, NULL);
+		ExceptionInfo->ContextRecord->Rip += 3;
+		return EXCEPTION_CONTINUE_EXECUTION;
+	}
+	return EXCEPTION_CONTINUE_SEARCH;
+}
+
 int main()
 {
 	//ULONG64 index = ReParserNT::GetInstance()->GetZwFunctionIndex("NtOpenProcess");
 	//MySetWindowDisplayAffinity((HWND)0x00080C86, 1);
+
+	//ReParserNT::GetInstance()->RtlAddVEHFunc(TRUE, ExpFunc);
+
+
+	//int z1 = 0;
+	//z1 = z1 / z1;
+	
 	char * p =(char*)MyAllocateVirtual(NULL, 0x1000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	initCrc();
 	HANDLE hThread = CreateThread(NULL, NULL, crcTest, NULL, 0, 0);

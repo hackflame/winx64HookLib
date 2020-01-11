@@ -18,7 +18,7 @@ public:
 	virtual ~ReParserNT();
 	ULONG64 GetZwFunctionAddr(char * funcName);
 	int GetZwFunctionIndex(char * funcName);
-
+	PVOID RtlAddVEHFunc(BOOLEAN isFisrt, PVECTORED_EXCEPTION_HANDLER func);
 public:
 	static ReParserNT * GetInstance();
 	static void DestoryInstance();

@@ -129,3 +129,17 @@ ULONG64 ReParserNT::GetZwFunctionAddr(char * funcName)
 
 	return funcAddr;
 }
+
+PVOID ReParserNT::RtlAddVEHFunc(BOOLEAN isFisrt, PVECTORED_EXCEPTION_HANDLER func)
+{
+	ULONG64 addr = (ULONG64)GetProcAddress(GetModuleHandleA("ntdll.dll"), "RtlAddVectoredExceptionHandler");
+	ULONG64 nextAddr = (addr + 8);
+	ULONG64 newAddr = this->GetZwFunctionAddr("RtlAddVectoredExceptionHandler");
+	ULONG offset = *(PULONG32)(newAddr + 4);
+	LARGE_INTEGER in = {0};
+	in.QuadPart = nextAddr;
+	in.LowPart += offset;
+	PVOID (WINAPI *AddVectoredExceptionHandlerFunc)(ULONG , PVECTORED_EXCEPTION_HANDLER,ULONG);
+	AddVectoredExceptionHandlerFunc = (PVOID(WINAPI*)(ULONG,PVECTORED_EXCEPTION_HANDLER, ULONG))in.QuadPart;
+	return AddVectoredExceptionHandlerFunc(isFisrt, func,0);
+}
