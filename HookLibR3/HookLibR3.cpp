@@ -121,8 +121,6 @@ int main()
 	//Hook后
 	ULONG64 y = (ULONG64)GetProcAddress(GetModuleHandle(L"ntdll.dll"), "NtOpenProcess");
 
-
-
 	HookEngine::DestoryInstance();
 
 	//Hook释放后 是否正常
