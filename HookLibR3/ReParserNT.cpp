@@ -132,14 +132,63 @@ ULONG64 ReParserNT::GetZwFunctionAddr(char * funcName)
 
 PVOID ReParserNT::RtlAddVEHFunc(BOOLEAN isFisrt, PVECTORED_EXCEPTION_HANDLER func)
 {
+	PVOID(WINAPI *AddVectoredExceptionHandlerFunc)(ULONG, PVECTORED_EXCEPTION_HANDLER, ULONG);
+	AddVectoredExceptionHandlerFunc = (PVOID(WINAPI *)(ULONG, PVECTORED_EXCEPTION_HANDLER, ULONG))this->GetRtlAddVEHFunc();
+	return AddVectoredExceptionHandlerFunc(isFisrt, func,0);
+}
+
+ULONG64 ReParserNT::GetRtlAddVEHFunc()
+{
 	ULONG64 addr = (ULONG64)GetProcAddress(GetModuleHandleA("ntdll.dll"), "RtlAddVectoredExceptionHandler");
 	ULONG64 nextAddr = (addr + 8);
 	ULONG64 newAddr = this->GetZwFunctionAddr("RtlAddVectoredExceptionHandler");
 	ULONG offset = *(PULONG32)(newAddr + 4);
-	LARGE_INTEGER in = {0};
+	LARGE_INTEGER in = { 0 };
 	in.QuadPart = nextAddr;
 	in.LowPart += offset;
-	PVOID (WINAPI *AddVectoredExceptionHandlerFunc)(ULONG , PVECTORED_EXCEPTION_HANDLER,ULONG);
-	AddVectoredExceptionHandlerFunc = (PVOID(WINAPI*)(ULONG,PVECTORED_EXCEPTION_HANDLER, ULONG))in.QuadPart;
-	return AddVectoredExceptionHandlerFunc(isFisrt, func,0);
+	return in.QuadPart;
+}
+
+ULONG64 ReParserNT::GetRtlRemoveVEHFunc()
+{
+	ULONG64 addr = (ULONG64)GetProcAddress(GetModuleHandleA("ntdll.dll"), "RtlRemoveVectoredExceptionHandler");
+	ULONG64 nextAddr = (addr + 7);
+	ULONG64 newAddr = this->GetZwFunctionAddr("RtlRemoveVectoredExceptionHandler");
+	ULONG offset = *(PULONG32)(newAddr + 3);
+	LARGE_INTEGER in = { 0 };
+	in.QuadPart = nextAddr;
+	in.LowPart += offset;
+
+	
+	return in.QuadPart;
+}
+
+void ReParserNT::clearVEH()
+{
+	PUCHAR func = (PUCHAR)this->GetRtlRemoveVEHFunc();
+	bool isFind = false;
+	for (int i = 0; i < 0x100; i++) 
+	{
+		if (*(func + i) == 0x48 && *(func + i + 1) == 0x83 && *(func + i + 2) == 0xEC && *(func + i + 3) == 0x20)
+		{
+			func += i+7;
+			isFind = true;
+			break;
+		}
+	}
+
+	if (!isFind) return;
+
+	//计算链表的位置
+	LARGE_INTEGER in;
+	in.QuadPart = (ULONG64)(func + 7);
+	ULONG offset = *(PULONG32)(func + 3);
+	in.LowPart += offset;
+
+	//开始 清空链表
+	PVEHList vls = (PVEHList)in.QuadPart;
+	AcquireSRWLockExclusive(&vls->lock);
+	vls->list.Blink = &vls->list;
+	vls->list.Flink = &vls->list;
+	ReleaseSRWLockExclusive(&vls->lock);
 }

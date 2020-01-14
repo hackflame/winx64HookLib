@@ -97,11 +97,12 @@ int main()
 	//ULONG64 index = ReParserNT::GetInstance()->GetZwFunctionIndex("NtOpenProcess");
 	//MySetWindowDisplayAffinity((HWND)0x00080C86, 1);
 
-	//ReParserNT::GetInstance()->RtlAddVEHFunc(TRUE, ExpFunc);
-
-
-	//int z1 = 0;
-	//z1 = z1 / z1;
+	ReParserNT::GetInstance()->RtlAddVEHFunc(TRUE, ExpFunc);
+	ReParserNT::GetInstance()->clearVEH();
+	ReParserNT::GetInstance()->RtlAddVEHFunc(TRUE, ExpFunc);
+	int z1 = 0;
+	z1 = z1 / z1;
+	
 	
 	char * p =(char*)MyAllocateVirtual(NULL, 0x1000, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	initCrc();
